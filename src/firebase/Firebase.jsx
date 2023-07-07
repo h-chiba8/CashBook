@@ -4,12 +4,12 @@ import { getAuth } from "firebase/auth";
 import "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBWSzouZ0KBaio34d6baBw9LYSnTIbzE0Q",
-  authDomain: "cash-book-487ce.firebaseapp.com",
-  projectId: "cash-book-487ce",
-  storageBucket: "cash-book-487ce.appspot.com",
-  messagingSenderId: "962403835695",
-  appId: "1:962403835695:web:263e103c276aa314514bda"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
