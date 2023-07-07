@@ -1,4 +1,7 @@
 .env
-
-/src/firebase/firebase.rules
-
+src/firebase/
+src/cashbook
+.codesandbox/
+.DS_Store
+firebase.json
+.firebaseserc
