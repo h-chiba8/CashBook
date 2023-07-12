@@ -5,3 +5,6 @@ src/cashbook
 .DS_Store
 firebase.json
 .firebaseserc
+node_modules
+firestore.rules
+firestore.indexes.json

@@ -1,6 +1,6 @@
 import React from "react";
 import { db } from "../firebase/Firebase";
-import { deleteDoc, doc } from "firebase/firestore";
+import { deleteDoc, doc } from "@firebase/firestore/lite";
 import { Container, Box, Typography, IconButton } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 

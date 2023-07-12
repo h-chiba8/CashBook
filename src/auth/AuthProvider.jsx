@@ -4,7 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged
-} from "firebase/auth";
+} from "@firebase/auth";
 
 const AuthContext = React.createContext();
 
