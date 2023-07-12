@@ -1,27 +1,22 @@
 import React from "react";
 import { Doughnut } from "react-chartjs-2";
-import { Chart as ChartJS } from "chart.js";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+} from "chart.js";
 import { Container, Typography, Box } from "@mui/material";
 
-// ChartJSの各種機能を登録
-ChartJS.register(
-  // 全コントローラーの登録
-  require("chart.js").controllers,
-  // 全エレメントの登録
-  require("chart.js").elements,
-  // 全スケールの登録
-  require("chart.js").scales,
-  // 全プラグインの登録
-  require("chart.js").plugins
-);
-
 const Chart = ({ expenses, currentDate }) => {
-  const year = currentDate.getFullYear(); // 現在の年を取得
-  const month = currentDate.getMonth(); // 現在の月を取得
-  const categories = ["investment", "consumption", "waste"]; // カテゴリーを英語に保持
-  const colors = ["#3d405b", "#e07a5f", "#81b29a"]; // カラー
+  const year = currentDate.getFullYear();
+  const month = currentDate.getMonth();
+  const categories = ["investment", "consumption", "waste"];
+  const colors = ["#3d405b", "#e07a5f", "#81b29a"];
 
-  // 各カテゴリーごとのデータを生成
   const chartData = categories.map((category) =>
     expenses
       .filter((expense) => {
@@ -37,15 +32,10 @@ const Chart = ({ expenses, currentDate }) => {
 
   const totalExpense = chartData.reduce((prev, curr) => prev + curr, 0);
 
-  // チャートのデータを生成
   const data = {
     labels: categories.map((category) =>
-      category === "investment"
-        ? "投資"
-        : category === "consumption"
-        ? "消費"
-        : "浪費"
-    ), // ラベルを日本語に変換
+      category === "investment" ? "投資" : category === "consumption" ? "消費" : "浪費"
+    ),
     datasets: [
       {
         data: chartData,
@@ -55,74 +45,34 @@ const Chart = ({ expenses, currentDate }) => {
     ]
   };
 
-  // チャートのオプションを設定
   const options = {
-    maintainAspectRatio: false, // チャートを親コンテナの全幅と全高に調整
-    aspectRatio: 1, // チャートを1:1（正方形）の比率に保つ
+    maintainAspectRatio: false,
+    aspectRatio: 1,
     plugins: {
-      datalabels: {
-        display: function (context) {
-          return context.dataset.data[context.dataIndex] > 0;
-        },
-        color: "#000000",
-        font: {
-          weight: "bold"
-        },
-        formatter: function (value, context) {
-          const total = context.dataset.data.reduce((acc, curr) => acc + curr);
-          const percentage = ((value / total) * 100).toFixed(2);
-          return `${percentage}%`;
+      tooltip: {
+        callbacks: {
+          label: (context) => {
+            const value = context.dataset.data[context.dataIndex];
+            const percentage = ((value / totalExpense) * 100).toFixed(2);
+            return `${data.labels[context.dataIndex]}: ${value}円 (${percentage}%)`;
+          }
         }
+      },
+      legend: {
+        display: true,
+        position: "bottom"
       }
     }
   };
 
-  // ドーナツチャートのレンダリング
   return (
-    <Container
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "500px",
-        maxWidth: "500px",
-        mt: 5 // Added margin top to create space between the Header
-      }}
-    >
-      <Typography variant="h4" style={{ marginBottom: "20px" }}>
+    <Container>
+      <Typography variant="h4" gutterBottom>
         合計: {totalExpense}円
       </Typography>
-      <Box display="flex" flexDirection="column" alignItems="center">
-        {categories.map((category, index) => {
-          const value = chartData[index];
-          const percentage =
-            totalExpense !== 0
-              ? ((value / totalExpense) * 100).toFixed(2)
-              : "0.00";
-          const japaneseCategory =
-            category === "investment"
-              ? "投資"
-              : category === "consumption"
-              ? "消費"
-              : "浪費";
-          return (
-            <Typography
-              variant="h6"
-              key={index}
-              sx={{
-                textDecoration: "underline",
-                textDecorationColor: colors[index]
-              }}
-            >
-              {`${japaneseCategory}：${value}円　${percentage}%`}
-            </Typography>
-          );
-        })}
-      </Box>
-      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+      <Box>
         <Doughnut data={data} options={options} />
-      </div>
+      </Box>
     </Container>
   );
 };
