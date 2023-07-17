@@ -9,7 +9,7 @@ import {
   // serverTimestamp
 } from "firebase/firestore";
 import Header from "./Header";
-import Chart from "./Chart";
+// import Chart from "./Chart";
 // import Total from "./Total";
 import Form from "./Form";
 import Expenses from "./Expenses";
@@ -46,8 +46,8 @@ function Home() {
       type === "投資"
         ? "investment"
         : type === "消費"
-        ? "consumption"
-        : "waste";
+          ? "consumption"
+          : "waste";
     await addDoc(collection(db, "expenses"), {
       amount: parseInt(amount, 10),
       text,
@@ -60,7 +60,7 @@ function Home() {
   return (
     <div>
       <Header currentDate={currentDate} setCurrentDate={setCurrentDate} />
-      <Chart expenses={expenses} currentDate={currentDate} />
+      {/* <Chart expenses={expenses} currentDate={currentDate} /> */}
       {/* <Total expenses={expenses} currentDate={currentDate} /> */}
       <Form addExpense={addExpense} />
       <Expenses expenses={expenses} currentDate={currentDate} />
